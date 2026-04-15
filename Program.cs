@@ -15,11 +15,6 @@ app.MapGet("/health", () => Results.Ok(new {
     time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") 
 }));
 
-app.MapGet("/version", (IConfiguration config) => 
-    Results.Ok(new { 
-        name = config["App:Name"], 
-        version = config["App:Version"] 
-    }));
 
 app.MapGet("/api/notes", () => notes);
 
