@@ -6,20 +6,17 @@ var app = builder.Build();
 var notes = new List<Note>();
 var nextId = 1;
 
-// 1. Хелсчек
 app.MapGet("/health", () => Results.Ok(new { 
     status = "ok", 
     time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") 
 }));
 
-// 2. Версия (ОСТАВИЛ ТОЛЬКО ОДИН РАЗ)
 app.MapGet("/version", (IConfiguration config) => 
     Results.Ok(new { 
         name = config["App:Name"], 
         version = config["App:Version"] 
     }));
 
-// 3. Работа с заметками
 app.MapGet("/api/notes", () => notes);
 
 app.MapGet("/api/notes/{id:int}", (int id) => 
@@ -43,7 +40,6 @@ app.MapDelete("/api/notes/{id:int}", (int id) => {
     return Results.NoContent();
 });
 
-// 4. Погода
 var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
 
 app.MapGet("/weatherforecast", () =>
@@ -58,7 +54,6 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 });
 
-// 5. База данных
 app.MapGet("/db/ping", async (IConfiguration config) =>
 {
     var connectionString = config.GetConnectionString("Mssql");
@@ -76,7 +71,6 @@ app.MapGet("/db/ping", async (IConfiguration config) =>
 
 app.Run();
 
-// Модели данных
 public record Note(int Id, string Title, string Text, DateTime CreatedAt);
 public record NoteInput(string Title, string Text);
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
